@@ -13,8 +13,9 @@ finish-args:
   - "--socket=pulseaudio"
   # As a game streaming service, network is obviously mendatory
   - "--share=network"
-  # Parsec supports Hardware Accelerated Decoding
-  - "--device=dri"
+  # Parsec supports Hardware Accelerated Decoding and Gamepads
+  # For Hardware Accelerated Decoding only, --device=dri would be enough
+  - "--device=all"
   # This is required in order to keep login state and settings as it doesn't
   # follow the freedesktop standard and therefore ignores $XDG_DATA_HOME.
   # Instead it drops everything into $HOME
