@@ -20,6 +20,7 @@ finish-args:
   # follow the freedesktop standard and therefore ignores $XDG_DATA_HOME.
   # Instead it drops everything into $HOME
   - "--persist=."
+  - "--filesystem=home"
   # Used for notifications due to the internal chat feature
   - "--talk-name=org.freedesktop.Notifications"
   - "--talk-name=org.freedesktop.portal.Fcitx"
