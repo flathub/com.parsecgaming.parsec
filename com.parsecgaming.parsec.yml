@@ -72,7 +72,7 @@ modules:
           # for the parsecd-*.so. Without this file present in the home directory
           # parsec will refuse to start.
           - "[ ! -e $HOME/appdata.json ] && cp /app/extra/share/parsec/skel/appdata.json $HOME"
-          - "[ ! -e $HOME/parsecd-*.so ] && cp /app/extra/share/parsec/skel/parsecd-*.so $HOME"
+          - "[ ! -e $HOME/parsecd-*.so ] && ln -s /app/extra/share/parsec/skel/parsecd-*.so $HOME"
           - "exec /app/extra/bin/parsecd \"$@\""
       - type: "file"
         path: "com.parsecgaming.parsec.metainfo.xml"
