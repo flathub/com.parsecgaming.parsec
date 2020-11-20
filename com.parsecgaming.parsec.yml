@@ -20,7 +20,6 @@ finish-args:
   # follow the freedesktop standard and therefore ignores $XDG_DATA_HOME.
   # Instead it drops everything into $HOME
   - "--persist=."
-  - "--filesystem=home"
   # Used for notifications due to the internal chat feature
   - "--talk-name=org.freedesktop.Notifications"
   - "--talk-name=org.freedesktop.portal.Fcitx"
@@ -72,10 +71,8 @@ modules:
           # The appdata.json is a file provided by parsec describing meta-information
           # for the parsecd-*.so. Without this file present in the home directory
           # parsec will refuse to start.
-          - "[ ! -e $HOME/appdata.json ] && ln -s /app/extra/share/parsec/skel/appdata.json $HOME/appdata.json"
-          - "PARSEC_LIB=\"$(basename /app/extra/share/parsec/skel/parsecd-*.so)\""
-          - "rm -f $HOME/*.so"
-          - "ln -s \"/app/extra/share/parsec/skel/${PARSEC_LIB}\" \"$HOME/${PARSEC_LIB}\""
+          - "[ ! -e $HOME/appdata.json ] && cp /app/extra/share/parsec/skel/appdata.json $HOME"
+          - "[ ! -e $HOME/parsecd-*.so ] && cp /app/extra/share/parsec/skel/parsecd-*.so $HOME"
           - "exec /app/extra/bin/parsecd \"$@\""
       - type: "file"
         path: "com.parsecgaming.parsec.metainfo.xml"
