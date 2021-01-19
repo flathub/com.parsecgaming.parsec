@@ -8,8 +8,8 @@ copy-icon: true
 separate-locales: false
 finish-args:
   - "--share=ipc"
-  - "--socket=wayland"
-  - "--socket=fallback-x11"
+  # Workaround for broken wayland support
+  - "--socket=x11"
   - "--socket=pulseaudio"
   # As a game streaming service, network is obviously mendatory
   - "--share=network"
