@@ -23,6 +23,15 @@ finish-args:
   # Used for notifications due to the internal chat feature
   - "--talk-name=org.freedesktop.Notifications"
   - "--talk-name=org.freedesktop.portal.Fcitx"
+add-extensions:
+  org.freedesktop.Platform.ffmpeg-full:
+    add-ld-path: .
+    autodelete: false
+    autodownload: true
+    directory: lib/ffmpeg
+    version: '22.08'
+cleanup-commands:
+      - mkdir -p /app/lib/ffmpeg
 cleanup:
   - "/include"
   - "/lib/pkgconfig"
