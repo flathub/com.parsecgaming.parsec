@@ -1,7 +1,7 @@
 ---
 app-id: "com.parsecgaming.parsec"
 runtime: "org.freedesktop.Platform"
-runtime-version: "22.08"
+runtime-version: "21.08"
 sdk: "org.freedesktop.Sdk"
 command: "parsec"
 copy-icon: true
@@ -29,7 +29,7 @@ add-extensions:
     autodelete: false
     autodownload: true
     directory: lib/ffmpeg
-    version: '22.08'
+    version: '21.08'
 cleanup-commands:
       - mkdir -p /app/lib/ffmpeg
 cleanup:
