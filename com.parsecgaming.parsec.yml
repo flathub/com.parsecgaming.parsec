@@ -1,28 +1,27 @@
----
-app-id: "com.parsecgaming.parsec"
-runtime: "org.freedesktop.Platform"
-runtime-version: "21.08"
-sdk: "org.freedesktop.Sdk"
-command: "parsec"
+app-id: com.parsecgaming.parsec
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+command: parsec
 copy-icon: true
 separate-locales: false
 finish-args:
-  - "--share=ipc"
+  - --share=ipc
   # Workaround for broken wayland support
-  - "--socket=x11"
-  - "--socket=pulseaudio"
+  - --socket=x11
+  - --socket=pulseaudio
   # As a game streaming service, network is obviously mendatory
-  - "--share=network"
+  - --share=network
   # Parsec supports Hardware Accelerated Decoding and Gamepads
   # For Hardware Accelerated Decoding only, --device=dri would be enough
-  - "--device=all"
+  - --device=all
   # This is required in order to keep login state and settings as it doesn't
   # follow the freedesktop standard and therefore ignores $XDG_DATA_HOME.
   # Instead it drops everything into $HOME
-  - "--persist=."
+  - --persist=.
   # Used for notifications due to the internal chat feature
-  - "--talk-name=org.freedesktop.Notifications"
-  - "--talk-name=org.freedesktop.portal.Fcitx"
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.portal.Fcitx
 add-extensions:
   org.freedesktop.Platform.ffmpeg-full:
     add-ld-path: .
@@ -31,61 +30,63 @@ add-extensions:
     directory: lib/ffmpeg
     version: '21.08'
 cleanup-commands:
-      - mkdir -p /app/lib/ffmpeg
+  - mkdir -p /app/lib/ffmpeg
 cleanup:
-  - "/include"
-  - "/lib/pkgconfig"
-  - "/lib/*.la"
-  - "/lib/*.a"
-  - "/share/pkgconfig"
-  - "/share/aclocal"
-  - "/share/gtk-doc"
-  - "/share/doc"
-  - "/share/info"
-  - "/share/man"
-  - "/man"
+  - /include
+  - /lib/pkgconfig
+  - /lib/*.la
+  - /lib/*.a
+  - /share/pkgconfig
+  - /share/aclocal
+  - /share/gtk-doc
+  - /share/doc
+  - /share/info
+  - /share/man
+  - /man
 modules:
-  - name: "parsec"
-    buildsystem: "simple"
+  - name: parsec
+    buildsystem: simple
     build-commands:
-      - "install -Dm755 /usr/bin/ar -t ${FLATPAK_DEST}/bin"
-      - "install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t ${FLATPAK_DEST}/lib"
-      - "install -Dm755 parsec.sh ${FLATPAK_DEST}/bin/parsec"
-      - "install -Dm755 apply_extra ${FLATPAK_DEST}/bin/apply_extra"
-      - "install -Dm644 com.parsecgaming.parsec.png ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/${FLATPAK_ID}.png"
-      - "install -Dm644 com.parsecgaming.parsec.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop"
-      - "install -Dm644 com.parsecgaming.parsec.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml"
+      - install -Dm755 /usr/bin/ar -t ${FLATPAK_DEST}/bin
+      - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t ${FLATPAK_DEST}/lib
+      - install -Dm755 parsec.sh ${FLATPAK_DEST}/bin/parsec
+      - install -Dm755 apply_extra ${FLATPAK_DEST}/bin/apply_extra
+      - install -Dm644 com.parsecgaming.parsec.png ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/${FLATPAK_ID}.png
+      - install -Dm644 com.parsecgaming.parsec.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm644 com.parsecgaming.parsec.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
 
     sources:
-      - type: "extra-data"
-        filename: "parsec-linux.deb"
+      - type: extra-data
+        filename: parsec-linux.deb
         only-arches:
           - x86_64
-        url: "https://builds.parsecgaming.com/package/parsec-linux.deb"
-        sha256: "0c7207f419377fc35e30448acd00d8701300ac5a44936ac6d87a468c9afccdc1"
-        size: 3188156
+        url: https://builds.parsecgaming.com/package/parsec-linux.deb
+        sha256: c30072f3a4ddac7687f626b8d32876e327791bce164d74448a147ef48ea8eae5
+        size: 1401456
         x-checker-data:
-            type: "rotating-url"
-            url: "https://builds.parsecgaming.com/package/parsec-linux.deb"
-      - type: "script"
-        dest-filename: "apply_extra"
+          type: rotating-url
+          url: https://builds.parsecgaming.com/package/parsec-linux.deb
+      - type: script
+        dest-filename: apply_extra
         commands:
-          - "ar x parsec-linux.deb"
-          - "tar xf data.tar.xz"
-          - "mv usr/* ."
-          - "rm -rf usr debian-binary control.tar.gz data.tar.xz parsec-linux.deb"
-      - type: "script"
-        dest-filename: "parsec.sh"
+          - ar x parsec-linux.deb
+          - tar xf data.tar.xz
+          - mv usr/* .
+          - rm -rf usr debian-binary control.tar.gz data.tar.xz parsec-linux.deb
+      - type: script
+        dest-filename: parsec.sh
         commands:
           # The appdata.json is a file provided by parsec describing meta-information
           # for the parsecd-*.so. Without this file present in the home directory
           # parsec will refuse to start.
-          - "[ ! -e $HOME/appdata.json ] && cp /app/extra/share/parsec/skel/appdata.json $HOME"
-          - "[ ! -e $HOME/parsecd-*.so ] && ln -s /app/extra/share/parsec/skel/parsecd-*.so $HOME"
-          - "exec /app/extra/bin/parsecd \"$@\""
-      - type: "file"
-        path: "com.parsecgaming.parsec.metainfo.xml"
-      - type: "file"
-        path: "com.parsecgaming.parsec.desktop"
-      - type: "file"
-        path: "com.parsecgaming.parsec.png"
+          - '[ ! -e $HOME/appdata.json ] && cp /app/extra/share/parsec/skel/appdata.json
+            $HOME'
+          - '[ ! -e $HOME/parsecd-*.so ] && ln -s /app/extra/share/parsec/skel/parsecd-*.so
+            $HOME'
+          - exec /app/extra/bin/parsecd "$@"
+      - type: file
+        path: com.parsecgaming.parsec.metainfo.xml
+      - type: file
+        path: com.parsecgaming.parsec.desktop
+      - type: file
+        path: com.parsecgaming.parsec.png
