@@ -31,11 +31,22 @@ add-extensions:
     version: '21.08'
 cleanup-commands:
   - mkdir -p /app/lib/ffmpeg
+  - mv /app/lib/libjpeg.so.8.2.2 /app/lib/libjpeg.so.8
 cleanup:
+  - /bin/cjpeg
+  - /bin/djpeg
+  - /bin/jpegtran
+  - /bin/rdjpgcom
+  - /bin/tjbench
+  - /bin/wrjpgcom
   - /include
+  - /lib/cmake
+  - /lib/debug
   - /lib/pkgconfig
   - /lib/*.la
   - /lib/*.a
+  - /lib/libjpeg.so
+  - /lib/libturbojpeg*
   - /share/pkgconfig
   - /share/aclocal
   - /share/gtk-doc
@@ -44,6 +55,18 @@ cleanup:
   - /share/man
   - /man
 modules:
+  - name: libjpeg  # needed for libjpeg.so.8
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_SKIP_RPATH:BOOL=YES
+      - -DENABLE_STATIC:BOOL=NO
+      - -DWITH_JPEG8:BOOL=YES
+      - -DCMAKE_INSTALL_LIBDIR=/app/lib
+    sources:
+      - type: archive
+        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz
+        sha256: dbda0c685942aa3ea908496592491e5ec8160d2cf1ec9d5fd5470e50768e7859
+
   - name: parsec
     buildsystem: simple
     build-commands:
