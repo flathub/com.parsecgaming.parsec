@@ -41,7 +41,7 @@ cleanup:
   - /bin/wrjpgcom
   - /include
   - /lib/cmake
-  - /lib/debug
+  - /lib/debug/source
   - /lib/pkgconfig
   - /lib/*.la
   - /lib/*.a
