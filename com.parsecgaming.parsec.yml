@@ -31,7 +31,7 @@ add-extensions:
     version: '21.08'
 cleanup-commands:
   - mkdir -p /app/lib/ffmpeg
-  - mv /app/lib/libjpeg.so.8.2.2 /app/lib/libjpeg.so.8
+  - mv /app/lib/libjpeg.so.8.* /app/lib/libjpeg.so.8
 cleanup:
   - /bin/cjpeg
   - /bin/djpeg
@@ -63,9 +63,12 @@ modules:
       - -DWITH_JPEG8:BOOL=YES
       - -DCMAKE_INSTALL_LIBDIR=/app/lib
     sources:
-      - type: archive
-        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz
-        sha256: dbda0c685942aa3ea908496592491e5ec8160d2cf1ec9d5fd5470e50768e7859
+      - type: git
+        url: https://github.com/libjpeg-turbo/libjpeg-turbo.git
+        tag: 3.0.0
+        x-checker-data:
+          type: git
+          tag-pattern: ^([\d\.]+)$
 
   - name: parsec
     buildsystem: simple
