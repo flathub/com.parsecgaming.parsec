@@ -70,6 +70,7 @@ modules:
           type: git
           tag-pattern: ^([\d\.]+)$
 
+        commit: 6c87537f60941f3c265c339fe60d1e31d2a42ccf
   - name: parsec
     buildsystem: simple
     build-commands:
