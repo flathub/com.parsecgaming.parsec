@@ -1,6 +1,6 @@
 app-id: com.parsecgaming.parsec
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '21.08'
 sdk: org.freedesktop.Sdk
 command: parsec
 copy-icon: true
@@ -28,7 +28,7 @@ add-extensions:
     autodelete: false
     autodownload: true
     directory: lib/ffmpeg
-    version: '23.08'
+    version: '21.08'
 cleanup-commands:
   - mkdir -p /app/lib/ffmpeg
   - mv /app/lib/libjpeg.so.8.* /app/lib/libjpeg.so.8
@@ -76,7 +76,6 @@ modules:
     build-commands:
       - install -Dm755 /usr/bin/ar -t ${FLATPAK_DEST}/bin
       - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t ${FLATPAK_DEST}/lib
-      - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libsframe*.so.* -t ${FLATPAK_DEST}/lib
       - install -Dm755 parsec.sh ${FLATPAK_DEST}/bin/parsec
       - install -Dm755 apply_extra ${FLATPAK_DEST}/bin/apply_extra
       - install -Dm644 com.parsecgaming.parsec.png ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/${FLATPAK_ID}.png
