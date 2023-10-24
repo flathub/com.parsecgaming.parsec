@@ -88,8 +88,8 @@ modules:
         only-arches:
           - x86_64
         url: https://builds.parsecgaming.com/package/parsec-linux.deb
-        sha256: c84318de167c1425c4c2924cdb811d295803dabdcb622310b64fe955d3829b7a
-        size: 1643428
+        sha256: ac549d97b0609ee2408fac398a7d3fcacccef1be6a72bf5bfb08c5d5690053bd
+        size: 1322960
         x-checker-data:
           type: rotating-url
           url: https://builds.parsecgaming.com/package/parsec-linux.deb
