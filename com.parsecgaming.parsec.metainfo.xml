@@ -6,15 +6,14 @@
   <summary>Simple, low-latency game streaming</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>LicenseRef-proprietary</project_license>
-  <url type="homepage">https://parsecgaming.com/</url>
+  <url type="homepage">https://parsec.app/</url>
   <description>
-    <p>Game, work, and play together from anywhere.</p>
-    <p>Parsec allows you to access your machine at home, while you are on the go.
-     Share machine access with your friends and family to have a remote couch game evening.
-     Or use the Arcade mode to play with random strangers all sorts of games.</p>
+    <p>Connect to your computer from anywhere</p>
+    <p>Remote desktop reimagined - a seamless 4k experience at up to 60 frames per second with near-zero latency.
+     Secure, flexible, effortless access to whatever you do, at any time, from wherever you go.</p>
     <p>NOTE: A Parsec account is required to use this application.</p>
     <p>NOTE: Parsec will not allow you to access your Linux machine remotely. You can only
-     join other host machines.</p>
+     connect to Windows and macOS machines.</p>
     <p>NOTE: This wrapper is not verified by, affiliated with, or
     supported by Parsec Cloud, Inc.</p>
   </description>
@@ -24,24 +23,17 @@
     <control>gamepad</control>
   </recommends>
   <releases>
+    <release version="3.9.9" date="2024-05-10"/>
     <release version="3.9.8" date="2020-06-21"/>
   </releases>
   <screenshots>
     <screenshot type="default">
       <caption>The login screen</caption>
-      <image type="source">https://git.shivering-isles.com/sheogorath/parsec-flatpak/-/raw/master/screenshots/login-view.png</image>
+      <image type="source">https://raw.githubusercontent.com/flathub/com.parsecgaming.parsec/master/screenshots/login-view.png</image>
     </screenshot>
     <screenshot>
       <caption>The computers menu</caption>
-      <image type="source">https://git.shivering-isles.com/sheogorath/parsec-flatpak/-/raw/master/screenshots/main-view.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>The arcade menu</caption>
-      <image type="source">https://git.shivering-isles.com/sheogorath/parsec-flatpak/-/raw/master/screenshots/arcade-view.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>The friends menu</caption>
-      <image type="source">https://git.shivering-isles.com/sheogorath/parsec-flatpak/-/raw/master/screenshots/friends-view.png</image>
+      <image type="source">https://raw.githubusercontent.com/flathub/com.parsecgaming.parsec/master/screenshots/main-view.png</image>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1">
@@ -58,5 +50,5 @@
     <content_attribute id="money-gambling">mild</content_attribute>
   </content_rating>
   <launchable type="desktop-id">com.parsecgaming.parsec.desktop</launchable>
-  <update_contact>founders@parsec.tv</update_contact>
+  <update_contact>callum@parsec.app</update_contact>
 </component>
