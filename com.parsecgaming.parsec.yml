@@ -64,12 +64,12 @@ modules:
     sources:
       - type: git
         url: https://github.com/libjpeg-turbo/libjpeg-turbo.git
-        tag: 3.0.2
+        tag: 3.0.3
         x-checker-data:
           type: git
           tag-pattern: ^([\d\.]+)$
 
-        commit: 289df647c0f208dad7db63f24830361257812b1b
+        commit: 7fa4b5b762c9a99b46b0b7838f5fd55071b92ea5
   - name: parsec
     buildsystem: simple
     build-commands:
