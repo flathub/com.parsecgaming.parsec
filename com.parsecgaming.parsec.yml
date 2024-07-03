@@ -61,22 +61,18 @@ modules:
   - name: parsec
     buildsystem: simple
     build-commands:
-      # Extract debian package.
-      - bsdtar --to-stdout -xf parsec-linux.deb data.* | bsdtar --strip-components 2 -xf -
-      # Copy extracted bin and data directories to the deployment location
-      - mv bin/* ${FLATPAK_DEST}/bin/
-      - mv share/parsec/ ${FLATPAK_DEST}/share/
-      # Install upstream icon.
-      - install -Dm644 share/icons/hicolor/256x256/apps/parsecd.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
+      # Install apply_extra script for installation.
+      - install -Dm755 apply_extra ${FLATPAK_DEST}/bin/apply_extra
       # Install Flatpak specific wrapper
       - install -Dm755 parsec.sh ${FLATPAK_DEST}/bin/parsec
       # Install Flatpak specific metainfo and desktop files.
+      - install -Dm644 com.parsecgaming.parsec.png ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/${FLATPAK_ID}.png
       - install -Dm644 com.parsecgaming.parsec.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
       - install -Dm644 com.parsecgaming.parsec.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
       # Create mount point for ffmpeg extension
       - mkdir -p ${FLATPAK_DEST}/lib/ffmpeg/
     sources:
-      - type: file
+      - type: extra-data
         filename: parsec-linux.deb
         only-arches:
           - x86_64
@@ -92,15 +88,24 @@ modules:
           # The appdata.json is a file provided by parsec describing meta-information
           # for the parsecd-*.so. Without this file present in the home directory
           # parsec will refuse to start.
-          - '[ ! -e $HOME/appdata.json ] && cp /app/share/parsec/skel/appdata.json
+          - '[ ! -e $HOME/appdata.json ] && cp /app/extra/share/parsec/skel/appdata.json
             $HOME'
-          - '[ ! -e $HOME/parsecd-*.so ] && ln -s /app/share/parsec/skel/parsecd-*.so
+          - '[ ! -e $HOME/parsecd-*.so ] && ln -s /app/extra/share/parsec/skel/parsecd-*.so
             $HOME'
-          - exec /app/bin/parsecd "$@"
+          - exec /app/extra/bin/parsecd "$@"
+      - type: script
+        dest-filename: apply_extra
+        commands:
+          # Extract debian package.
+          - bsdtar --to-stdout -xf parsec-linux.deb data.* | bsdtar --strip-components 2 -xf -
+          # Delete debian package.
+          - rm -rf parsec-linux.deb
       - type: file
         path: com.parsecgaming.parsec.metainfo.xml
       - type: file
         path: com.parsecgaming.parsec.desktop
+      - type: file
+        path: com.parsecgaming.parsec.png
     cleanup:
       - /lib/debug
       # Add bad future files here.
