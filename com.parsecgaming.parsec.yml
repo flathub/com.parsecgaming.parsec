@@ -64,8 +64,8 @@ modules:
       # Extract debian package.
       - bsdtar --to-stdout -xf parsec-linux.deb data.* | bsdtar --strip-components 2 -xf -
       # Copy extracted bin and data directories to the deployment location
-      - mv bin/* ${FLATPAK_DEST}/bin
-      - mv share/parsec/* ${FLATPAK_DEST}/share/
+      - mv bin/* ${FLATPAK_DEST}/bin/
+      - mv share/parsec/ ${FLATPAK_DEST}/share/
       # Install upstream icon.
       - install -Dm644 share/icons/hicolor/256x256/apps/parsecd.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
       # Install Flatpak specific wrapper
@@ -74,7 +74,7 @@ modules:
       - install -Dm644 com.parsecgaming.parsec.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
       - install -Dm644 com.parsecgaming.parsec.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
       # Create mount point for ffmpeg extension
-      - mkdir -p ${FLATPAK_DEST}/lib/ffmpeg
+      - mkdir -p ${FLATPAK_DEST}/lib/ffmpeg/
     sources:
       - type: file
         filename: parsec-linux.deb
