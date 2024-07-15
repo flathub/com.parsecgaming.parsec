@@ -1,10 +1,10 @@
-app-id: com.parsecgaming.parsec
+id: com.parsecgaming.parsec
 runtime: org.freedesktop.Platform
-runtime-version: '21.08'
+# Bump me when needed.
+runtime-version: &runtime-version '23.08'
 sdk: org.freedesktop.Sdk
+
 command: parsec
-copy-icon: true
-separate-locales: false
 finish-args:
   - --share=ipc
   # Workaround for broken wayland support
@@ -27,60 +27,50 @@ add-extensions:
     autodelete: false
     autodownload: true
     directory: lib/ffmpeg
-    version: '21.08'
-cleanup-commands:
-  - mkdir -p /app/lib/ffmpeg
-  - mv /app/lib/libjpeg.so.8.* /app/lib/libjpeg.so.8
-cleanup:
-  - /bin/cjpeg
-  - /bin/djpeg
-  - /bin/jpegtran
-  - /bin/rdjpgcom
-  - /bin/tjbench
-  - /bin/wrjpgcom
-  - /include
-  - /lib/cmake
-  - /lib/debug/source
-  - /lib/pkgconfig
-  - /lib/*.la
-  - /lib/*.a
-  - /lib/libjpeg.so
-  - /lib/libturbojpeg*
-  - /share/pkgconfig
-  - /share/aclocal
-  - /share/gtk-doc
-  - /share/doc
-  - /share/info
-  - /share/man
-  - /man
+    # Updates with the runtime version set above
+    version: *runtime-version
+
 modules:
-  - name: libjpeg  # needed for libjpeg.so.8
+  # Required Dependency for Parsec
+  # Emulates the old libjpeg v8 API/ABI
+  - name: libjpeg-turbo 
     buildsystem: cmake-ninja
     config-opts:
-      - -DCMAKE_SKIP_RPATH:BOOL=YES
-      - -DENABLE_STATIC:BOOL=NO
-      - -DWITH_JPEG8:BOOL=YES
+      - -DCMAKE_SKIP_RPATH=1
+      - -DENABLE_STATIC=0
+      - -DENABLE_SHARED=1
+      - -DWITH_JPEG8=1
+      - -DWITH_TURBOJPEG=0
       - -DCMAKE_INSTALL_LIBDIR=/app/lib
     sources:
       - type: git
         url: https://github.com/libjpeg-turbo/libjpeg-turbo.git
         tag: 3.0.3
+        commit: 7fa4b5b762c9a99b46b0b7838f5fd55071b92ea5
         x-checker-data:
           type: git
           tag-pattern: ^([\d\.]+)$
+    cleanup:
+      - /bin/*
+      - /include
+      - /share
+      - /lib/cmake
+      - /lib/debug
+      - /lib/pkgconfig
 
-        commit: 7fa4b5b762c9a99b46b0b7838f5fd55071b92ea5
   - name: parsec
     buildsystem: simple
     build-commands:
-      - install -Dm755 /usr/bin/ar -t ${FLATPAK_DEST}/bin
-      - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t ${FLATPAK_DEST}/lib
-      - install -Dm755 parsec.sh ${FLATPAK_DEST}/bin/parsec
+      # Install apply_extra script for installation.
       - install -Dm755 apply_extra ${FLATPAK_DEST}/bin/apply_extra
+      # Install Flatpak specific wrapper
+      - install -Dm755 parsec.sh ${FLATPAK_DEST}/bin/parsec
+      # Install Flatpak specific metainfo and desktop files.
       - install -Dm644 com.parsecgaming.parsec.png ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/${FLATPAK_ID}.png
       - install -Dm644 com.parsecgaming.parsec.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
       - install -Dm644 com.parsecgaming.parsec.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
-
+      # Create mount point for ffmpeg extension
+      - mkdir -p ${FLATPAK_DEST}/lib/ffmpeg/
     sources:
       - type: extra-data
         filename: parsec-linux.deb
@@ -93,13 +83,6 @@ modules:
           type: rotating-url
           url: https://builds.parsecgaming.com/package/parsec-linux.deb
       - type: script
-        dest-filename: apply_extra
-        commands:
-          - ar x parsec-linux.deb
-          - tar xf data.tar.xz
-          - mv usr/* .
-          - rm -rf usr debian-binary control.tar.gz data.tar.xz parsec-linux.deb
-      - type: script
         dest-filename: parsec.sh
         commands:
           # The appdata.json is a file provided by parsec describing meta-information
@@ -110,9 +93,19 @@ modules:
           - '[ ! -e $HOME/parsecd-*.so ] && ln -s /app/extra/share/parsec/skel/parsecd-*.so
             $HOME'
           - exec /app/extra/bin/parsecd "$@"
+      - type: script
+        dest-filename: apply_extra
+        commands:
+          # Extract debian package.
+          - bsdtar --to-stdout -xf parsec-linux.deb data.* | bsdtar --strip-components 2 -xf -
+          # Delete debian package.
+          - rm -rf parsec-linux.deb
       - type: file
         path: com.parsecgaming.parsec.metainfo.xml
       - type: file
         path: com.parsecgaming.parsec.desktop
       - type: file
         path: com.parsecgaming.parsec.png
+    cleanup:
+      - /lib/debug
+      # Add bad future files here.
