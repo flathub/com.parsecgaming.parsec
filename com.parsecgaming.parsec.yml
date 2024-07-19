@@ -33,7 +33,7 @@ add-extensions:
 modules:
   # Required Dependency for Parsec
   # Emulates the old libjpeg v8 API/ABI
-  - name: libjpeg-turbo 
+  - name: libjpeg-turbo
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_SKIP_RPATH=1
@@ -77,8 +77,8 @@ modules:
         only-arches:
           - x86_64
         url: https://builds.parsecgaming.com/package/parsec-linux.deb
-        sha256: c1fb1ab9032e6e718a19f2fd73465e7b98379e7d1e1273856a540d2f7778c1e1
-        size: 1352016
+        sha256: f45e7abbe8d88f60829616e71a52e2eb91714b556ad34728c70bbb9a3553635c
+        size: 1368780
         x-checker-data:
           type: rotating-url
           url: https://builds.parsecgaming.com/package/parsec-linux.deb
@@ -97,7 +97,8 @@ modules:
         dest-filename: apply_extra
         commands:
           # Extract debian package.
-          - bsdtar --to-stdout -xf parsec-linux.deb data.* | bsdtar --strip-components 2 -xf -
+          - bsdtar --to-stdout -xf parsec-linux.deb data.* | bsdtar --strip-components
+            2 -xf -
           # Delete debian package.
           - rm -rf parsec-linux.deb
       - type: file
