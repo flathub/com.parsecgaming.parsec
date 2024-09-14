@@ -45,8 +45,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/libjpeg-turbo/libjpeg-turbo.git
-        tag: 3.0.3
-        commit: 7fa4b5b762c9a99b46b0b7838f5fd55071b92ea5
+        tag: 3.0.90
+        commit: a9f7490cda6f6840ff3662b4d67ce0a91de5c9a5
         x-checker-data:
           type: git
           tag-pattern: ^([\d\.]+)$
