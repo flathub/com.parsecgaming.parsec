@@ -45,8 +45,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/libjpeg-turbo/libjpeg-turbo.git
-        tag: 3.0.3
-        commit: 7fa4b5b762c9a99b46b0b7838f5fd55071b92ea5
+        tag: 3.1.0
+        commit: 20ade4dea9589515a69793e447a6c6220b464535
         x-checker-data:
           type: git
           tag-pattern: ^([\d\.]+)$
@@ -77,8 +77,8 @@ modules:
         only-arches:
           - x86_64
         url: https://builds.parsecgaming.com/package/parsec-linux.deb
-        sha256: f45e7abbe8d88f60829616e71a52e2eb91714b556ad34728c70bbb9a3553635c
-        size: 1368780
+        sha256: f1691ba3a97534604f5f640c26cceafaef672ccf7ab6eed66114d0abafc2cccf
+        size: 1390928
         x-checker-data:
           type: rotating-url
           url: https://builds.parsecgaming.com/package/parsec-linux.deb
