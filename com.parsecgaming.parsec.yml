@@ -1,9 +1,7 @@
 id: com.parsecgaming.parsec
 runtime: org.freedesktop.Platform
-# Bump me when needed.
 runtime-version: &runtime-version '25.08'
 sdk: org.freedesktop.Sdk
-
 command: parsec
 finish-args:
   - --share=ipc
@@ -21,14 +19,6 @@ finish-args:
   - --persist=.
   # Used for notifications due to the internal chat feature
   - --talk-name=org.freedesktop.Notifications
-add-extensions:
-  org.freedesktop.Platform.ffmpeg-full:
-    add-ld-path: .
-    autodelete: false
-    autodownload: true
-    directory: lib/ffmpeg
-    # Updates with the runtime version set above
-    version: *runtime-version
 
 modules:
   # Required Dependency for Parsec
@@ -55,7 +45,6 @@ modules:
       - /include
       - /share
       - /lib/cmake
-      - /lib/debug
       - /lib/pkgconfig
 
   - name: parsec
@@ -107,6 +96,3 @@ modules:
         path: com.parsecgaming.parsec.desktop
       - type: file
         path: com.parsecgaming.parsec.png
-    cleanup:
-      - /lib/debug
-      # Add bad future files here.
