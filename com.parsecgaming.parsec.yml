@@ -23,29 +23,7 @@ finish-args:
 modules:
   # Required Dependency for Parsec
   # Emulates the old libjpeg v8 API/ABI
-  - name: libjpeg-turbo
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DCMAKE_SKIP_RPATH=1
-      - -DENABLE_STATIC=0
-      - -DENABLE_SHARED=1
-      - -DWITH_JPEG8=1
-      - -DWITH_TURBOJPEG=0
-      - -DCMAKE_INSTALL_LIBDIR=/app/lib
-    sources:
-      - type: git
-        url: https://github.com/libjpeg-turbo/libjpeg-turbo.git
-        tag: 3.1.2
-        commit: 4e151a4ad91001b3aa8c2ece2205c15f487ce320
-        x-checker-data:
-          type: git
-          tag-pattern: ^([\d\.]+)$
-    cleanup:
-      - /bin/*
-      - /include
-      - /share
-      - /lib/cmake
-      - /lib/pkgconfig
+  # name: libjpeg-turbo
 
   - name: parsec
     buildsystem: simple
