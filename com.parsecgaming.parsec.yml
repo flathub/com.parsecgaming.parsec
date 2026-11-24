@@ -1,6 +1,8 @@
 id: com.parsecgaming.parsec
 runtime: org.freedesktop.Platform
 runtime-version: &runtime-version '25.08'
+# Branch of org.freedesktop.Platform.codecs-extra for the runtime above
+x-runtime-version-extra: &runtime-version-extra '25.08-extra'
 sdk: org.freedesktop.Sdk
 command: parsec
 finish-args:
@@ -19,6 +21,27 @@ finish-args:
   - --persist=.
   # Used for notifications due to the internal chat feature
   - --talk-name=org.freedesktop.Notifications
+
+# Parsec dlopens the runtime FFmpeg to enumerate video decoders, and the base
+# runtime ships a codec-restricted FFmpeg, so working H.264/H.265 decode
+# relies on the org.freedesktop.Platform.codecs-extra runtime extension. The
+# 25.08 runtime auto-installs it, but `flatpak uninstall --unused` (and
+# Discover's cleanup) treat it as an unused ref and can remove it from
+# otherwise working installs, after which every connection fails with
+# error -17 (DECODE_ERR_NO_SUPPORT) and Settings > Client > Decoder is an
+# empty list. Declaring it here marks it as app-related so cleanups keep it,
+# and `flatpak update` reinstalls it when missing. The mount mirrors the
+# runtime's own declaration of this extension. Do not bump to a runtime
+# whose codecs-extra ships libavcodec.so.62 or newer: parsecd only loads
+# libavcodec sonames 57-61.
+add-extensions:
+  org.freedesktop.Platform.codecs-extra:
+    add-ld-path: lib
+    autodelete: false
+    directory: lib/x86_64-linux-gnu/codecs-extra
+    version: *runtime-version-extra
+cleanup-commands:
+  - mkdir -p ${FLATPAK_DEST}/lib/x86_64-linux-gnu/codecs-extra
 
 modules:
   # Required Dependency for Parsec
